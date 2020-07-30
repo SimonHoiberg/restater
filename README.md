@@ -98,7 +98,7 @@ Creating the store will work the same as before.
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'restater';
+import { createAsyncStore } from 'restater';
 
 // Define the initial state
 const initialState = {
@@ -135,11 +135,11 @@ This enables us to render something conditionally, based on the current state of
 
 ```javascript
 import React from 'react';
-import { useStore } from 'restater';
+import { useAsyncStore } from 'restater';
 import { MyAsyncStore } from '../index';
 
 const App = () => {
-  const [username, setUsername] = useStore(MyAsyncStore, 'username');
+  const [username, setUsername] = useAsyncStore(MyAsyncStore, 'username');
 
   if (username.state === 'initial') {
     return <div>The initial name is: {username.data}</div>;
@@ -175,6 +175,27 @@ await setUsername(getUpdatedUsername());
 
 This will cause the `username.state` to go into `loading` in any component that is using the username from the store.  
 Note that the `setUsername` itself returns a Promise, so we can await it and do something after the `username.state` has gone into either `completed` or `failed`.
+
+### Helper functions
+
+To avoid wrapping too many providers in each other, you can use the helper function `combineProviders` which will reduce a list of providers into one.  
+```javascript
+import { combineProviders } from 'restater';
+
+const [Provider1, Context1] = createStore({ /* some intital state */ });
+const [Provider2, Context2] = createAsyncStore({ /* some intital state */ });
+
+// Combine the providers
+const Provider = combineProviders([Provider1, Provider2]);
+
+ReactDOM.render(
+  // Use the reduced provider and provide access to both stores
+  <Provider>
+    <App />
+  </Provider>,
+  document.getElementById('root'),
+);
+```
 
 ## License
 
