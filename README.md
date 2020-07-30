@@ -145,16 +145,16 @@ const App = () => {
     return <div>The initial name is: {username.data}</div>;
   }
 
+  if (username.state === 'completed') {
+    return <div>My name is: {username.data}</div>;
+  }
+
   if (username.state === 'loading') {
     return <div>Loading ...</div>;
   }
 
   if (username.state === 'failed') {
     return <div>Something went wrong</div>;
-  }
-
-  if (username.state === 'completed') {
-    return <div>My name is: {username}</div>;
   }
 };
 ```
@@ -182,8 +182,8 @@ To avoid wrapping too many providers in each other, you can use the helper funct
 ```javascript
 import { combineProviders } from 'restater';
 
-const [Provider1, Context1] = createStore({ /* some intital state */ });
-const [Provider2, Context2] = createAsyncStore({ /* some intital state */ });
+const [Provider1, Context1] = createStore({ /* intital state */ });
+const [Provider2, Context2] = createAsyncStore({ /* intital state */ });
 
 // Combine the providers
 const Provider = combineProviders([Provider1, Provider2]);
