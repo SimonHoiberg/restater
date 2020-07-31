@@ -155,12 +155,12 @@ const App = () => {
   }
 
   if (username.state === 'failed') {
-    return <div>Something went wrong</div>;
+    return <div>Something failed: {username.error.message}</div>;
   }
 };
 ```
 
-Because the store is async, the `setUsername` now expects a Promise instead of a raw value.
+Because the store is async, the `setUsername` now expects a promise instead of a raw value.
 
 ```javascript
 const getUpdatedUsername = async () => {
@@ -176,7 +176,7 @@ setUsername(getUpdatedUsername());
 
 This will cause the `username.state` to go into `loading` in any component that is using the username from the store.  
 
-Note that the `setUsername` itself returns a Promise, so we can await it and do something after the `username.state` has gone into either `completed` or `failed`.  
+Note that the `setUsername` itself returns a promise, so we can await it and do something after the `username.state` has gone into either `completed` or `failed`.  
 ```javascript
 await setUsername(getUpdatedUsername());
 // Do something after the username has been updated
