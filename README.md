@@ -91,7 +91,7 @@ Any component that is using the username from the store will now get updated, bu
 ### Create a Async Store
 
 A store can also hold async values, and for that, we create a separate kind of store using `createAsyncStore`.  
-Again, we provide initial values, but the store is treat these values as promises that needs to be resolved before being set.
+Again, we provide initial values, but the store will treat these values as promises that needs to be resolved before being set.
 
 Creating the store will work the same as before.
 
@@ -166,19 +166,24 @@ const getUpdatedUsername = async () => {
   const request = await fetch('http://username-api.com');
   const result = await request.json();
 
+  // Result is the new username
   return result;
 };
 
-await setUsername(getUpdatedUsername());
-// Do something after update
+setUsername(getUpdatedUsername());
 ```
 
 This will cause the `username.state` to go into `loading` in any component that is using the username from the store.  
-Note that the `setUsername` itself returns a Promise, so we can await it and do something after the `username.state` has gone into either `completed` or `failed`.
+
+Note that the `setUsername` itself returns a Promise, so we can await it and do something after the `username.state` has gone into either `completed` or `failed`.  
+```javascript
+await setUsername(getUpdatedUsername());
+// Do something after the username has been updated
+```
 
 ### Helper functions
 
-To avoid wrapping too many providers in each other, you can use the helper function `combineProviders` which will reduce a list of providers into one.  
+To avoid wrapping too many providers in each other, you can use the helper function `combineProviders` which will combine a list of providers into one.  
 ```javascript
 import { combineProviders } from 'restater';
 
