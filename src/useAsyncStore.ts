@@ -17,7 +17,7 @@ const useAsyncStore = <T, K extends keyof T>(context: React.Context<IAsyncContex
       const data = await promise;
       setStore({ prop: key, payload: { state: 'completed', data } });
     } catch (error) {
-      setStore({ prop: key, payload: { state: 'failed' } });
+      setStore({ prop: key, payload: { state: 'failed', error } });
     }
   };
 

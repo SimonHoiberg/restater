@@ -88,7 +88,7 @@ Any component that is using the username from the store will now get updated, bu
 
 ---
 
-### Create a Async Store
+### Create an Async Store
 
 A store can also hold async values, and for that, we create a separate kind of store using `createAsyncStore`.  
 Again, we provide initial values, but the store will treat these values as promises that needs to be resolved before being set.
@@ -124,14 +124,15 @@ export { MyAsyncStore };
 ### Use the async store
 
 When we use an Async Store, the _state_ and _setState_ functions behave a little different.  
-Instead of `username` containing the value directly, it will contain an object with two properties: `data` and `state`.
+Instead of `username` containing the value directly, it will contain an object with three properties: `data`, `state`, and `error`.
 
 - `data` contains the value of `username`.
 - `state` represents the current state of the promise, and can be either `initial`, `loading`, `failed` or `completed`.
+- `error` contains the error that is thrown, if the promise fails.
 
 This enables us to render something conditionally, based on the current state of the store data we want to use.
 
-> Note that `data` will only exists when `state` is either `initial` or `completed`.
+> Note that `data` will only exist when `state` is either `initial` or `completed`, and `error` will only exist if `state` is `failed`.
 
 ```javascript
 import React from 'react';

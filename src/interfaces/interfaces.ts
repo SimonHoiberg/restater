@@ -12,8 +12,8 @@ export type AsyncState = 'initial' | 'loading' | 'completed' | 'failed';
 export type AsyncPayload<V> =
   | { state: 'initial'; data: V }
   | { state: 'completed'; data: V }
-  | { state: 'loading' }
-  | { state: 'failed' };
+  | { state: 'failed'; error: Error }
+  | { state: 'loading' };
 
 export interface IAsyncContext<T> {
   store: { [K in keyof T]: AsyncPayload<T[K]> };
