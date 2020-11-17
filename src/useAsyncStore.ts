@@ -8,7 +8,6 @@ import { useContext } from 'react';
  */
 const useAsyncStore = <T, K extends keyof T>(context: React.Context<IAsyncContext<T>>, key: K) => {
   const { store, setStore } = useContext(context);
-  const state = store[key];
 
   const setState = async (
     promiseOrCallback:
@@ -22,7 +21,7 @@ const useAsyncStore = <T, K extends keyof T>(context: React.Context<IAsyncContex
         const callback = promiseOrCallback as (
           currentValue: { [K in keyof T]: AsyncPayload<T[K]> }[K],
         ) => Promise<T[K]>;
-        const data = await callback(state);
+        const data = await callback(store[key]);
         setStore({ prop: key, payload: { state: 'completed', data } });
       } else {
         const promise = promiseOrCallback as Promise<T[K]>;
@@ -34,7 +33,7 @@ const useAsyncStore = <T, K extends keyof T>(context: React.Context<IAsyncContex
     }
   };
 
-  return [state, setState] as [
+  return [store[key], setState] as [
     { [K in keyof T]: AsyncPayload<T[K]> }[K],
     (promise: Promise<T[K]>) => Promise<void>,
   ];
