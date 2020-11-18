@@ -1,6 +1,6 @@
 {
   "name": "restater",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Tiny hook-based state management tool for React",
   "main": "dist/index.js",
   "files": [
