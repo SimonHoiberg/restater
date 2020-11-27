@@ -182,6 +182,15 @@ await setUsername(getUpdatedUsername());
 // Do something after the username has been updated
 ```
 
+When using an Async Store, the `setUsername` function takes an optional `options` object as the second argument:
+```javascript
+setUsername(getUpdatedUsername(), { skipLoading: true });
+```
+
+Setting `skipLoading` to `true` will bypass the `loading` step.  
+This will make `username.state` go directly from `initial` to `completed` or `failed`.  
+If ``username.state` is already in `completed`, it will stay there, or go to `failed`.  
+
 ### Helper functions
 
 To avoid wrapping too many providers in each other, you can use the helper function `combineProviders` which will combine a list of providers into one.  

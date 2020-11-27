@@ -1,4 +1,4 @@
-import { IAsyncContext, AsyncPayload } from './interfaces/interfaces';
+import { IAsyncContext, AsyncPayload, IAsyncStateOptions } from './interfaces/interfaces';
 import { useContext } from 'react';
 
 /**
@@ -19,16 +19,19 @@ const useAsyncStore = <T, K extends keyof T>(context: React.Context<IAsyncContex
   const setState = async (
     promiseOrCallback:
       | Promise<T[K]>
-      | ((currentValue: { [K in keyof T]: AsyncPayload<T[K]> }[K]) => Promise<T[K]>),
+      | ((currentValue: { [K in keyof T]: T[K] }[K]) => Promise<T[K]>),
+    options?: IAsyncStateOptions,
   ) => {
-    setStore({ prop: key, payload: { state: 'loading' } });
+    if (!options?.skipLoading) {
+      setStore({ prop: key, payload: { state: 'loading' } });
+    }
 
     try {
       if (typeof promiseOrCallback === 'function') {
         const callback = promiseOrCallback as (
-          currentValue: { [K in keyof T]: AsyncPayload<T[K]> }[K],
+          currentValue: { [K in keyof T]: T[K] }[K],
         ) => Promise<T[K]>;
-        const data = await callback(outerStore[key]);
+        const data = await callback(outerStore[key]?.data);
         setStore({ prop: key, payload: { state: 'completed', data } });
       } else {
         const promise = promiseOrCallback as Promise<T[K]>;
@@ -42,7 +45,12 @@ const useAsyncStore = <T, K extends keyof T>(context: React.Context<IAsyncContex
 
   return [store[key], setState] as [
     { [K in keyof T]: AsyncPayload<T[K]> }[K],
-    (promise: Promise<T[K]>) => Promise<void>,
+    (
+      promiseOrCallback:
+        | Promise<T[K]>
+        | ((currentValue: { [K in keyof T]: T[K] }[K]) => Promise<T[K]>),
+      options?: IAsyncStateOptions | undefined,
+    ) => Promise<void>,
   ];
 };
 

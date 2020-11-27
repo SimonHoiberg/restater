@@ -24,3 +24,7 @@ export interface IAsyncAction<T, V> {
   prop: T;
   payload: AsyncPayload<V>;
 }
+
+export interface IAsyncStateOptions {
+  skipLoading?: boolean;
+}
