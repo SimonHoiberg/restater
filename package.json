@@ -1,6 +1,6 @@
 {
   "name": "restater",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Tiny hook-based state management tool for React",
   "main": "dist/index.js",
   "files": [
@@ -28,9 +28,11 @@
   "homepage": "https://github.com/Silind-Software/restater#readme",
   "dependencies": {
     "@types/react": "^16.9.43",
-    "@types/react-dom": "^16.9.8",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "@types/react-dom": "^16.9.8"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.27.0",
